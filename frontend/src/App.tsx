@@ -1,24 +1,45 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Commet } from 'react-loading-indicators';
 
-import HomePage from './components/HomePage'
-import SignupPage from './components/SignupPage';
-import LoginPage from './components/LoginPage';
-import SettingsPage from './components/SettingsPage';
-import ProfilePage from './components/ProfilePage';
+import HomePage from './pages/HomePage'
+import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage';
+import SettingsPage from './pages/SettingsPage';
+import ProfilePage from './pages/ProfilePage';
+import { useAuthStore } from './store/useAuthStore';
+import { useEffect } from 'react';
+import {Toaster} from "react-hot-toast";
+import Navbar from './components/Navbar';
+
 
 function App() {
+  const {authUser, checkAuth, isCheckingAuth} = useAuthStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  console.log(authUser);
+
+  if(isCheckingAuth && !authUser){
+    return(
+      <div className='h-screen w-full flex items-center justify-center'>
+        <Commet color="#3137cc" size="medium" text="" textColor="" />
+      </div>
+    )
+  }
 
   return (
-    <div className="h-[100vh]">
+    <div className="h-[100vh] w-[100%] bg-[#edf2fb] ">
+      <Navbar />
       <Router>
           <Routes>
-              <Route path="/" element={<Navigate to="/signup" />} />
-              <Route path="/login" element={<SignupPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/home" element={<SettingsPage />} />
-              <Route path="/home" element={<ProfilePage />} />
+              <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+              <Route path="/signup" element={ !authUser ? <SignupPage /> : <Navigate to="/" /> } />
+              <Route path="/login" element={ !authUser ? <LoginPage /> : <Navigate to="/" /> } />
+              <Route path="/settings-page" element={ <SettingsPage />} />
+              <Route path="/profile-page" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
           </Routes>
+
+          <Toaster />
       </Router>
   </div>
   )
