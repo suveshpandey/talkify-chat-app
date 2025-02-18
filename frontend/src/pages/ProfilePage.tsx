@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import { format } from "date-fns";
 import { FaEdit, FaCircle } from "react-icons/fa";
 import { useAuthStore } from "../store/useAuthStore";
@@ -8,6 +9,7 @@ const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
     // const [selectedImg, setSelectedImg] =  useState<string | null>(null);
     
+    const navigate = useNavigate();
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -32,6 +34,9 @@ const ProfilePage = () => {
             reader.readAsDataURL(file);
         }
     };
+    const handleClose = () => {
+        navigate("/")
+    }
     
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
@@ -87,7 +92,7 @@ const ProfilePage = () => {
                     <div className="pt-6 border-t border-slate-200">
                         <button
                             className="bg-slate-800 text-white px-6 py-2 rounded-lg hover:bg-slate-700 transition-colors duration-300"
-                            onClick={() => setIsEditing(false)} // Close editing mode
+                            onClick={handleClose} // Close editing mode
                         >
                             Close
                         </button>

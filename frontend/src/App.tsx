@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {Routes, Route, Navigate } from 'react-router-dom';
 import { Commet } from 'react-loading-indicators';
 
 import HomePage from './pages/HomePage'
@@ -28,9 +28,9 @@ function App() {
   }
 
   return (
-    <div className="h-[100vh] w-[100%] bg-[#edf2fb] ">
+    <div data-theme="" className="h-[100vh] w-[100%] bg-[#edf2fb] ">
       <Navbar />
-      <Router>
+      <>
           <Routes>
               <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
               <Route path="/signup" element={ !authUser ? <SignupPage /> : <Navigate to="/" /> } />
@@ -40,7 +40,7 @@ function App() {
           </Routes>
 
           <Toaster />
-      </Router>
+      </>
   </div>
   )
 }

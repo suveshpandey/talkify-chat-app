@@ -79,23 +79,42 @@ export const useAuthStore = create<AuthState> ((set) => ({
         }  
     },
 
+    // login: async (data: LoginData) => {
+    //     set({isLoggingIn: true});
+    //     try{
+    //         const res = await axiosInstance.post("/auth/login", data);
+    //         set({authUser: res.data});
+    //         toast.success("Logged in successfully");
+    //     }
+    //     catch (error) {
+    //         const err = error as AxiosError<{ message: string }>;
+    //         toast.error(err.response?.data?.message || "Login failed");
+    //         console.log("Couldn't login");
+    //     }  
+    //     finally{
+    //         set({isLoggingIn: false});
+    //     }      
+    // },
+
     login: async (data: LoginData) => {
-        set({isLoggingIn: true});
-        try{
+        set({ isLoggingIn: true });
+        try {
             const res = await axiosInstance.post("/auth/login", data);
-            set({authUser: res.data});
+            set({ authUser: res.data });
+    
+            // Fetch the latest user data
+            await useAuthStore.getState().checkAuth();
+    
             toast.success("Logged in successfully");
-        }
-        catch (error) {
+        } catch (error) {
             const err = error as AxiosError<{ message: string }>;
             toast.error(err.response?.data?.message || "Login failed");
             console.log("Couldn't login");
-        }  
-        finally{
-            set({isLoggingIn: false});
-        }      
+        } finally {
+            set({ isLoggingIn: false });
+        }
     },
-
+    
     updateProfile: async (data: UpdateProfileData) => {
         set({IsUpdatingProfile: true});
         try{
