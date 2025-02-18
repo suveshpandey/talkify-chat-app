@@ -109,32 +109,70 @@ interface AuthRequest extends Request {
         profilePic?: string
     }
 }
-export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
-    try{
-        const {profilePic} = req.body;
+// export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+//     try{
+//         const {profilePic} = req.body;
 
-        if (!req.user){
+//         if (!req.user){
+//             res.status(401).json({ message: "Unauthorized - User not found." });
+//             return;
+//         }
+//         const userId = req.user._id;
+
+//         const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+
+//         const updatedUser = userModel.findById(userId, {profilePic: uploadedResponse.secure_url}, {new:true});
+        
+//         res.status(200).json({message: "Profile-pic updated successfully.", updatedUser: updatedUser});
+    
+//     }
+//     catch(error){
+//         if(error instanceof Error){
+//             console.log("Error in login contoller.", error.message);
+//             res.status(500).json({message: error.message});
+//         }
+//         else{
+//             console.log("Unknown error in login controller: ", error);
+//             res.status(500).json({message: "Internal server error."});
+//         }
+//     }
+// };
+export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { profilePic } = req.body;
+
+        if (!req.user) {
             res.status(401).json({ message: "Unauthorized - User not found." });
             return;
         }
         const userId = req.user._id;
 
-        const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+        // Upload Base64 image to Cloudinary
+        const uploadedResponse = await cloudinary.uploader.upload(profilePic, {
+            folder: "profile_pictures", // Optional: Organize images in a Cloudinary folder
+            transformation: [{ width: 500, height: 500, crop: "limit" }], // Resizing (optional)
+        });
 
-        const updatedUser = userModel.findById(userId, {profilePic: uploadedResponse.secure_url}, {new:true});
-        
-        res.status(200).json({message: "Profile-pic updated successfully.", updatedUser: updatedUser});
-    
-    }
-    catch(error){
-        if(error instanceof Error){
-            console.log("Error in login contoller.", error.message);
-            res.status(500).json({message: error.message});
+        if (!uploadedResponse.secure_url) {
+            throw new Error("Failed to upload profile picture to Cloudinary.");
         }
-        else{
-            console.log("Unknown error in login controller: ", error);
-            res.status(500).json({message: "Internal server error."});
+
+        // Update user document with new profilePic URL
+        const updatedUser = await userModel.findByIdAndUpdate(
+            userId,
+            { profilePic: uploadedResponse.secure_url },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            res.status(404).json({ message: "User not found." });
+            return;
         }
+
+        res.status(200).json({ message: "Profile pic updated successfully.", authUser: updatedUser });
+    } catch (error) {
+        console.error("Error in updateProfile:", error);
+        res.status(500).json({ message: "Internal server error." });
     }
 };
 

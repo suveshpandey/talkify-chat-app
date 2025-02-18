@@ -13,7 +13,9 @@ const db_1 = require("./lib/db");
 dotenv_1.default.config();
 const PORT = process.env.PORT;
 const app = (0, express_1.default)();
-app.use(express_1.default.json());
+// app.use(express.json());
+app.use(express_1.default.json({ limit: "10mb" })); // Increase JSON payload size limit
+app.use(express_1.default.urlencoded({ limit: "10mb", extended: true }));
 app.use((0, cookie_parser_1.default)());
 app.use((0, cors_1.default)({
     origin: "http://localhost:5173",

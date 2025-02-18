@@ -106,6 +106,29 @@ const logout = (req, res) => {
     }
 };
 exports.logout = logout;
+// export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+//     try{
+//         const {profilePic} = req.body;
+//         if (!req.user){
+//             res.status(401).json({ message: "Unauthorized - User not found." });
+//             return;
+//         }
+//         const userId = req.user._id;
+//         const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+//         const updatedUser = userModel.findById(userId, {profilePic: uploadedResponse.secure_url}, {new:true});
+//         res.status(200).json({message: "Profile-pic updated successfully.", updatedUser: updatedUser});
+//     }
+//     catch(error){
+//         if(error instanceof Error){
+//             console.log("Error in login contoller.", error.message);
+//             res.status(500).json({message: error.message});
+//         }
+//         else{
+//             console.log("Unknown error in login controller: ", error);
+//             res.status(500).json({message: "Internal server error."});
+//         }
+//     }
+// };
 const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { profilePic } = req.body;
@@ -114,19 +137,25 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             return;
         }
         const userId = req.user._id;
-        const uploadedResponse = yield cloudinary_1.default.uploader.upload(profilePic);
-        const updatedUser = user_model_1.default.findById(userId, { profilePic: uploadedResponse.secure_url }, { new: true });
-        res.status(200).json({ message: "Profile-pic updated successfully.", updatedUser: updatedUser });
+        // Upload Base64 image to Cloudinary
+        const uploadedResponse = yield cloudinary_1.default.uploader.upload(profilePic, {
+            folder: "profile_pictures", // Optional: Organize images in a Cloudinary folder
+            transformation: [{ width: 500, height: 500, crop: "limit" }], // Resizing (optional)
+        });
+        if (!uploadedResponse.secure_url) {
+            throw new Error("Failed to upload profile picture to Cloudinary.");
+        }
+        // Update user document with new profilePic URL
+        const updatedUser = yield user_model_1.default.findByIdAndUpdate(userId, { profilePic: uploadedResponse.secure_url }, { new: true });
+        if (!updatedUser) {
+            res.status(404).json({ message: "User not found." });
+            return;
+        }
+        res.status(200).json({ message: "Profile pic updated successfully.", authUser: updatedUser });
     }
     catch (error) {
-        if (error instanceof Error) {
-            console.log("Error in login contoller.", error.message);
-            res.status(500).json({ message: error.message });
-        }
-        else {
-            console.log("Unknown error in login controller: ", error);
-            res.status(500).json({ message: "Internal server error." });
-        }
+        console.error("Error in updateProfile:", error);
+        res.status(500).json({ message: "Internal server error." });
     }
 });
 exports.updateProfile = updateProfile;

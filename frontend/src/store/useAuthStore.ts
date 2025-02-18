@@ -11,8 +11,9 @@ interface AuthState {
     isCheckingAuth: boolean,
     checkAuth: () => void,
     signup: (data: SignupData) => Promise<void>;
-    logout: () => void
-    login: (data: LoginData) => Promise<void>
+    logout: () => void,
+    login: (data: LoginData) => Promise<void>,
+    updateProfile: (data: UpdateProfileData) => Promise<void>
 }
 interface SignupData {
     email: string,
@@ -22,6 +23,9 @@ interface SignupData {
 interface LoginData {
     email: string,
     password: string
+}
+interface UpdateProfileData {
+    profilePic: string
 }
 export const useAuthStore = create<AuthState> ((set) => ({
     
@@ -90,5 +94,22 @@ export const useAuthStore = create<AuthState> ((set) => ({
         finally{
             set({isLoggingIn: false});
         }      
+    },
+
+    updateProfile: async (data: UpdateProfileData) => {
+        set({IsUpdatingProfile: true});
+        try{
+            const res = await axiosInstance.put("auth/update-profile", data);
+            set({authUser: res.data.authUser});
+            toast.success("Profile updated successfully");
+        }
+        catch(error){
+            const err = error as AxiosError<{ message: string }>;
+            toast.error("Profile updation failed, internal server error");
+            console.log(err.response?.data?.message );
+        }
+        finally{
+            set({IsUpdatingProfile: false});
+        }
     }
 }));
