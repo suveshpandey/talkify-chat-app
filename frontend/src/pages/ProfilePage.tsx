@@ -39,7 +39,7 @@ const ProfilePage = () => {
     }
     
     return (
-        <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+        <div className=" h-[calc(100vh-4rem)] w-[100%] bg-slate-100 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md transition-all duration-300 hover:shadow-xl">
                 <div className="relative group">
                     <div className="relative w-48 h-48 mx-auto mb-6">

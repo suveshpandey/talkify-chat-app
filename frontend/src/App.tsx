@@ -28,7 +28,7 @@ function App() {
   }
 
   return (
-    <div data-theme="" className="h-[100vh] w-[100%] bg-[#edf2fb] ">
+    <div data-theme="" className="h-[100vh] w-[100%] bg-[#edf2fb] dark:bg-gray-900 ">
       <Navbar />
       <>
           <Routes>

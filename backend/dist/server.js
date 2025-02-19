@@ -22,7 +22,7 @@ app.use((0, cors_1.default)({
     credentials: true
 }));
 app.use('/api/auth', auth_route_1.default);
-app.use('/api/message', message_route_1.default);
+app.use('/api/messages', message_route_1.default);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}...`);
     (0, db_1.connectDB)();
