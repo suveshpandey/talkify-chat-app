@@ -81,7 +81,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div className=" w-[400px] h-[calc(100vh-4rem)] bg-gray-800 border-r border-gray-700 flex sm:relative fixed flex-col overflow-y-scroll">
+        <div className=" w-[400px] h-[calc(100vh-4rem)] bg-gray-800 border-r border-gray-700 flex sm:relative absolute flex-col overflow-y-scroll z-1 ">
             <div className="p-4 border-b border-gray-700 flex items-center gap-x-2">
                 <BiSolidContact className="size-6 ml-3 text-gray-500" />
                 <h1 className="text-2xl font-bold text-gray-500">Contacts</h1>

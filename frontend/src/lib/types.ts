@@ -6,3 +6,11 @@ export interface User {
     username: string;
     profilePic: string;
 }
+export interface Message {
+    _id: Types.ObjectId | null;
+    senderId: Types.ObjectId | null; 
+    receiverId: Types.ObjectId | null; 
+    text: string;
+    image: string;
+    createdAt: string;
+}

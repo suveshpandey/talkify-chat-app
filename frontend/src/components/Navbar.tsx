@@ -25,8 +25,8 @@ const Navbar = () => {
                         </a>
                     </div>
                     <div className="flex gap-x-3 items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                        <button type="button" className="flex justify-center items-center text-sm size-8 bg-gray-300 rounded-full md:me-0 active:ring-4 active:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-                            <MdDarkMode className="size-6 text-slate-800" />
+                        <button type="button" className="flex justify-center items-center text-sm size-8 rounded-full ring-1 ring-slate-400 hover:ring-blue-500 active:ring-green-500 " id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                            <MdDarkMode className="size-6 text-slate-500 hover:text-slate-300 duration-200 transition-all" />
                         </button>
                         <button type="button" onClick={handleProfile} className="flex text-sm bg-gray-800 rounded-full md:me-0 active:ring-4 active:ring-gray-300 dark:active:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                             <img className="w-8 h-8 rounded-full" src={(authUser != null && authUser.profilePic) || "./avatar.png"} alt="user photo" />

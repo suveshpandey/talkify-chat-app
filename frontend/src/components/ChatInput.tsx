@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { useChatStore } from '../store/useChatStore';
 
 import { MdAddPhotoAlternate } from "react-icons/md";
+import { HiOutlinePhotograph } from "react-icons/hi";
 import { IoSend } from "react-icons/io5";
 import toast from 'react-hot-toast';
 
@@ -50,7 +51,7 @@ const ChatInput = () => {
     };
 
     return (
-        <div className='p-4 w-full'>
+        <div className='h-16 sm:px-8 px-3 my-2 w-[100%] '>
             {imagePreview && (
                 <div className='mb-3 flex items-center gap-2'>
                     <div className='relative'>
@@ -73,7 +74,7 @@ const ChatInput = () => {
                 <div className='flex-1 flex gap-2 items-center '>
                     <input 
                         type="text" 
-                        className='w-full rounded-lg h-14 px-4 outline-none bg-slate-950 hover:ring-1 transition-all duration-200  '
+                        className='w-full rounded-full h-14 px-4 outline-none bg-slate-950 hover:ring-1 transition-all duration-200  '
                         placeholder='Type a message...'
                         value={text}
                         onChange={(e) => setText(e.target.value)}
@@ -89,12 +90,12 @@ const ChatInput = () => {
                         type='button'
                         className={`${imagePreview && `text-green-200` }`}
                         onClick={() => fileInputRef.current?.click()}
-                    ><MdAddPhotoAlternate className='size-14' /></button>
+                    ><HiOutlinePhotograph className='size-12  border-2 bg-gray-100 hover:bg-blue-200 text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ' /></button>
                 </div>
                 <button
                     type='submit'
                     disabled={!text.trim() && !imagePreview}
-                ><IoSend className={`size-12 hover:ring-2 ring-green-500 cursor-pointer p-1 rounded-full transition-all duration-200 ${!text.trim() && `opacity-40`} `} />
+                ><IoSend className={`size-12  border-2 bg-gray-100 hover:bg-green-200 text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ${!text.trim() && `opacity-70`} `} />
                 </button>
             </form>
         </div>

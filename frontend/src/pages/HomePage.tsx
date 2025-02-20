@@ -8,7 +8,7 @@ const home = () => {
     return (
         <div className="bg-slate-800 h-[calc(100vh-4rem)] w-[100%] lg:w-[75%] mx-auto flex ">
             {isSidebarOpen && <Sidebar />}
-            <div className="w-[100%] h-[100%] flex justify-center items-center ">
+            <div className={`w-[100%] h-[100%] flex justify-center items-center ${isSidebarOpen ? `hidden sm:block` : ``}  `}>
                 {selectedUser ? <ChatContainer /> : <NoChatSelected />}
             </div>
         </div>
