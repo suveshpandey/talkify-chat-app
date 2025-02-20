@@ -14,11 +14,12 @@ interface ChatStoreState {
     isSidebarOpen: boolean,
     getUsers: () => Promise<void>;
     getMessages: (userId: Types.ObjectId | string) => Promise<void>;
-    setSelectedUser: (selectedUser: User) => void;
+    sendMessage: (messageData: any) => Promise<void>;
+    setSelectedUser: (selectedUser: User | null) => void;
     toggleSidebar: () => void
 }
 
-export const useChatStore = create<ChatStoreState>((set) => ({
+export const useChatStore = create<ChatStoreState>((set, get) => ({
     messages: [],
     users: [],
     selectedUser: null,
@@ -57,10 +58,21 @@ export const useChatStore = create<ChatStoreState>((set) => ({
             set({isMessagesLoading: false});
         }
     },
+    sendMessage: async (messageData: any) => {
+        const {selectedUser, messages} = get();
+        try{
+            const res = await axiosInstance.post(`/messages/send/${selectedUser?._id}`, messageData)
+            set({messages: [...messages, res.data]});
+        }
+        catch(error){
+            const err = error as AxiosError<{ message: string }>;
+            // toast.error("Failed to fetch messages");
+            console.log("Couldn't fetch messages", err);
+        }
+    },
 
     //todo: optimize this later
-    setSelectedUser: (selectedUser: User) => set({selectedUser}),
-
+    setSelectedUser: (selectedUser: User| null) => set({selectedUser}),
     toggleSidebar: () => set((state) => ({isSidebarOpen: !state.isSidebarOpen}))
 
 }))
