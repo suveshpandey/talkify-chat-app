@@ -34,7 +34,7 @@ const Signup = () => {
 
     return (
         <div className="dark">
-            <div className=" font-[sans-serif] h-screen bg-white md:h-screen">
+            <div className=" font-[sans-serif] h-[calc(100vh-4rem)] bg-white ">
                 <div className="grid md:grid-cols-2 items-center gap-8 h-full">
                     <div className="max-md:order-1 p-4 bg-gray-50 h-full">
                         <img src="https://readymadeui.com/signin-image.webp" className="max-w-[80%] w-full h-full aspect-square object-contain block mx-auto" alt="login-image" />

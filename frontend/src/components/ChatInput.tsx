@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { useChatStore } from '../store/useChatStore';
 
-import { MdAddPhotoAlternate } from "react-icons/md";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { IoSend } from "react-icons/io5";
 import toast from 'react-hot-toast';
@@ -51,7 +50,7 @@ const ChatInput = () => {
     };
 
     return (
-        <div className='h-16 sm:px-8 px-3 my-2 w-[100%] '>
+        <div className='h-auto sm:px-8 px-3 mb-4 mt-1 w-[100%] '>
             {imagePreview && (
                 <div className='mb-3 flex items-center gap-2'>
                     <div className='relative'>
@@ -64,7 +63,7 @@ const ChatInput = () => {
                         )}
                         <button
                             onClick={handleRemoveImage}
-                            className='absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-200 rounded-full text-slate-800 flex items-center justify-center '
+                            className='absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-300 font-semibold rounded-full text-slate-800 flex items-center justify-center '
                             type='button'
                         >X</button>
                     </div>
@@ -74,7 +73,7 @@ const ChatInput = () => {
                 <div className='flex-1 flex gap-2 items-center '>
                     <input 
                         type="text" 
-                        className='w-full rounded-full h-14 px-4 outline-none bg-slate-950 hover:ring-1 transition-all duration-200  '
+                        className='w-full rounded-full h-14 px-6 outline-none bg-slate-950 hover:ring-1 transition-all duration-200  '
                         placeholder='Type a message...'
                         value={text}
                         onChange={(e) => setText(e.target.value)}
@@ -90,12 +89,12 @@ const ChatInput = () => {
                         type='button'
                         className={`${imagePreview && `text-green-200` }`}
                         onClick={() => fileInputRef.current?.click()}
-                    ><HiOutlinePhotograph className='size-12  border-2 bg-gray-100 hover:bg-blue-200 text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ' /></button>
+                    ><HiOutlinePhotograph className='size-12  border-2 ring-gray-100 text-gray-100 hover:bg-gray-100 hover:text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ' /></button>
                 </div>
                 <button
                     type='submit'
                     disabled={!text.trim() && !imagePreview}
-                ><IoSend className={`size-12  border-2 bg-gray-100 hover:bg-green-200 text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ${!text.trim() && `opacity-70`} `} />
+                ><IoSend className={`size-12  border-2 bg-gray-200 hover:bg-white text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ${!text.trim() && `opacity-70`} `} />
                 </button>
             </form>
         </div>

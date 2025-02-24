@@ -1,17 +1,18 @@
 import { BiSolidContact } from "react-icons/bi";
 import { BsCircleFill } from "react-icons/bs";
 import { useChatStore } from "../store/useChatStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../lib/types";
 import { useAuthStore } from "../store/useAuthStore";
 
 interface UserInterface {
     user: User,
     selectedUser: User | null,
-    setSelectedUser: (user: User) => void
+    setSelectedUser: (user: User) => void,
+    onlineUsers: string[]
 }
 
-const ContactCard = ({ user, setSelectedUser, selectedUser }: UserInterface) => {
+const ContactCard = ({ user, setSelectedUser, selectedUser, onlineUsers }: UserInterface) => {
     return (
         <div 
             className={`flex items-center mt-1 p-3 pl-6 cursor-pointer transition-all duration-300 rounded-lg
@@ -24,12 +25,11 @@ const ContactCard = ({ user, setSelectedUser, selectedUser }: UserInterface) => 
                     className="w-10 h-10 rounded-full object-cover"
                 />
                 {true && (
-                    <BsCircleFill className="absolute bottom-0 right-0 text-green-500 text-xs" />
+                    <BsCircleFill className={`absolute bottom-0 right-0 ${onlineUsers.includes(user._id?.toString() || "") ? `text-green-500` : `text`} text-xs`} />
                 )}
             </div>
             <div className="ml-3 flex-1">
                 <h3 className="text-md font-medium text-gray-300 truncate">{user.username}</h3>
-                <p className="text-xs text-gray-500 truncate">{"No messages yet"}</p>
             </div>
         </div>
     );
@@ -52,14 +52,12 @@ const SkeletonContactCard = () => {
 const Sidebar = () => {
     const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
     const {onlineUsers} = useAuthStore();
+    const [showOnlineUsersOnly, setShowOnlineUsersOnly] = useState(false);
+    const onlineFilteredUsers = showOnlineUsersOnly ? users.filter(user => onlineUsers.includes(user._id?.toString() || "" )) : users;
 
     useEffect(() => {
         getUsers();
     }, [getUsers]);
-
-    useEffect(() => {
-        console.log("Users in Sidebar:", users); // Log the users array
-    }, [users]);
 
     if (isUsersLoading) {
         return (
@@ -86,13 +84,25 @@ const Sidebar = () => {
                 <BiSolidContact className="size-6 ml-3 text-gray-500" />
                 <h1 className="text-2xl font-bold text-gray-500">Contacts</h1>
             </div>
+            <div className="mt-3 hidden lg:flex items-center justify-center gap-2">
+                <label className="cursor-pointer flex itmes-center justify-center">
+                    <input type="checkbox"
+                    checked={showOnlineUsersOnly}
+                    onChange={(e) => setShowOnlineUsersOnly(e.target.checked)}
+                    className="checkbox checkbox-sm"
+                    />
+                    <p className="opacity-60 ml-1 ">Show online users only</p>
+                </label>
+                (<span className="text-green-500 opacity-70">{onlineUsers.length - 1} online</span>)
+            </div>
             <div>
-                {Array.isArray(users)  && users.map((user) => (
+                {Array.isArray(users)  && onlineFilteredUsers.map((user) => (
                     <ContactCard 
                         key={user._id?.toString()}
                         user={user}
                         selectedUser={selectedUser}
                         setSelectedUser={() => setSelectedUser(user)}
+                        onlineUsers={onlineUsers}
                     />
                 ))}
             </div>

@@ -4,6 +4,8 @@ import { Request, Response } from "express";
 import userModel from "../models/user.model";
 import messageModel from "../models/message.model";
 import cloudinary from "../lib/cloudinary";
+import { getReceiverSocketId } from "../lib/socket";
+import { io } from "../lib/socket";
 
 interface AuthRequest extends Request {
     user?: {
@@ -90,8 +92,13 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
 
         await newMessage.save();
 
-        //todo: realtime functionality goes here => socket.io
+        //*realtime chat send
         
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
+
         res.status(201).json({message: newMessage});
     }
     catch(error){

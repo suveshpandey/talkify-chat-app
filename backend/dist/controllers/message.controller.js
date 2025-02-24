@@ -16,6 +16,8 @@ exports.sendMessage = exports.getMessages = exports.getUsersForSidebar = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const message_model_1 = __importDefault(require("../models/message.model"));
 const cloudinary_1 = __importDefault(require("../lib/cloudinary"));
+const socket_1 = require("../lib/socket");
+const socket_2 = require("../lib/socket");
 ;
 const getUsersForSidebar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -90,7 +92,11 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             image: imageUrl
         });
         yield newMessage.save();
-        //todo: realtime functionality goes here => socket.io
+        //*realtime chat send
+        const receiverSocketId = (0, socket_1.getReceiverSocketId)(receiverId);
+        if (receiverSocketId) {
+            socket_2.io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
         res.status(201).json({ message: newMessage });
     }
     catch (error) {
