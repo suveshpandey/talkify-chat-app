@@ -10,13 +10,18 @@ import { useAuthStore } from './store/useAuthStore';
 import { useEffect } from 'react';
 import {Toaster} from "react-hot-toast";
 import Navbar from './components/Navbar';
+import useThemeStore from './store/useThemeStore';
 
 
 function App() {
   const {authUser, checkAuth, isCheckingAuth} = useAuthStore();
+  const { isDark } = useThemeStore();
+
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+    if(isDark) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.add('light');
+  }, [checkAuth, isDark]);
 
   if(isCheckingAuth && !authUser){
     return(

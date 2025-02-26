@@ -88,7 +88,7 @@ const Sidebar = () => {
                 <h1 className="text-2xl font-bold text-slate-600 dark:text-slate-400">Users</h1>
             </div>
 
-            <div className="mt-3 hidden lg:flex items-center justify-center gap-2 px-4">
+            <div className="mt-3 hidden lg:flex items-center justify-center gap-2 ">
                 <label className="cursor-pointer flex items-center justify-center">
                     <input 
                         type="checkbox"

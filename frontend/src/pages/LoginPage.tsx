@@ -99,7 +99,7 @@ const Login = () => {
     // );
 
     return (
-        <div className="dark">
+        <div className="">
             <div className="font-[sans-serif] h-[calc(100vh-4rem)] bg-white dark:bg-slate-900">
                 <div className="grid md:grid-cols-2 items-center gap-8 h-full">
                     <div className="max-md:order-1 p-4 bg-gray-50 dark:bg-slate-800 h-full">
