@@ -49,31 +49,87 @@ const ChatInput = () => {
         if(fileInputRef.current) fileInputRef.current.value = "";
     };
 
+    // return (
+    //     <div className='h-auto sm:px-8 px-3 mb-4 mt-1 w-[100%] '>
+    //         {imagePreview && (
+    //             <div className='mb-3 flex items-center gap-2'>
+    //                 <div className='relative'>
+    //                     {imagePreview && (
+    //                         <img
+    //                             src={imagePreview as string}
+    //                             alt="Preview"
+    //                             className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
+    //                         />
+    //                     )}
+    //                     <button
+    //                         onClick={handleRemoveImage}
+    //                         className='absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-300 font-semibold rounded-full text-slate-800 flex items-center justify-center '
+    //                         type='button'
+    //                     >X</button>
+    //                 </div>
+    //             </div>
+    //         )}
+
+    //         <form onSubmit={handleSendMessage} className='flex items-center gap-3 p-2'>
+    //             <div className='flex-1 flex gap-2 items-center'>
+    //                 <input 
+    //                 type="text" 
+    //                 className='w-full rounded-full h-14 px-6 outline-none bg-slate-900 text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-indigo-500 transition-all duration-200 border border-slate-700'
+    //                 placeholder='Type a message...'
+    //                 value={text}
+    //                 onChange={(e) => setText(e.target.value)}
+    //                 />
+    //                 <input 
+    //                 type="file" 
+    //                 accept='image/*'
+    //                 className='hidden'
+    //                 ref={fileInputRef}
+    //                 onChange={handleImageChange}
+    //                 />
+    //                 <button
+    //                 type='button'
+    //                 onClick={() => fileInputRef.current?.click()}
+    //                 className='p-3 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors duration-200 group border border-slate-600'
+    //                 >
+    //                 <HiOutlinePhotograph className='size-7 text-indigo-400 group-hover:text-indigo-300 transition-colors' />
+    //                 </button>
+    //             </div>
+                
+    //             <button
+    //                 type='submit'
+    //                 disabled={!text.trim() && !imagePreview}
+    //                 className='p-3 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200 border border-indigo-500'
+    //             >
+    //                 <IoSend className='size-7 text-white transform' />
+    //             </button>
+    //         </form>
+    //     </div>
+    // )
+
     return (
-        <div className='h-auto sm:px-8 px-3 mb-4 mt-1 w-[100%] '>
+        <div className='h-auto sm:px-8 px-3 mb-4 mt-1 w-[100%]'>
             {imagePreview && (
                 <div className='mb-3 flex items-center gap-2'>
                     <div className='relative'>
-                        {imagePreview && (
-                            <img
-                                src={imagePreview as string}
-                                alt="Preview"
-                                className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
-                            />
-                        )}
+                        <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-20 h-20 object-cover rounded-lg border border-slate-300 dark:border-slate-600"
+                        />
                         <button
                             onClick={handleRemoveImage}
-                            className='absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-300 font-semibold rounded-full text-slate-800 flex items-center justify-center '
+                            className='absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-400 dark:bg-red-500 font-semibold rounded-full text-white flex items-center justify-center hover:scale-105 transition-transform'
                             type='button'
-                        >X</button>
+                        >×</button>
                     </div>
                 </div>
             )}
-            <form onSubmit={handleSendMessage} className='flex items-center gap-2'>
-                <div className='flex-1 flex gap-2 items-center '>
+
+            <form onSubmit={handleSendMessage} className='flex items-center gap-3 p-2'>
+                <div className='flex-1 flex gap-2 items-center'>
                     <input 
                         type="text" 
-                        className='w-full rounded-full h-14 px-6 outline-none bg-slate-950 hover:ring-1 transition-all duration-200  '
+                        className='w-full rounded-full h-14 px-6 outline-none bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-1 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition-all duration-200 border border-slate-300 dark:border-slate-700'
                         placeholder='Type a message...'
                         value={text}
                         onChange={(e) => setText(e.target.value)}
@@ -87,14 +143,19 @@ const ChatInput = () => {
                     />
                     <button
                         type='button'
-                        className={`${imagePreview && `text-green-200` }`}
                         onClick={() => fileInputRef.current?.click()}
-                    ><HiOutlinePhotograph className='size-12  border-2 ring-gray-100 text-gray-100 hover:bg-gray-100 hover:text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ' /></button>
+                        className='p-3 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors duration-200 border border-slate-300 dark:border-slate-600'
+                    >
+                        <HiOutlinePhotograph className='size-7 text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-300 transition-colors' />
+                    </button>
                 </div>
+                
                 <button
                     type='submit'
                     disabled={!text.trim() && !imagePreview}
-                ><IoSend className={`size-12  border-2 bg-gray-200 hover:bg-white text-gray-700 cursor-pointer p-2.5 rounded-full transition-all duration-200 ${!text.trim() && `opacity-70`} `} />
+                    className='p-3 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200 border border-indigo-500'
+                >
+                    <IoSend className='size-7 text-white transform' />
                 </button>
             </form>
         </div>

@@ -99,8 +99,8 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
 
     },
 
-    //todo: optimize this later
     setSelectedUser: (selectedUser: User| null) => set({selectedUser}),
+    
     toggleSidebar: () => set((state) => ({isSidebarOpen: !state.isSidebarOpen}))
 
 }))
