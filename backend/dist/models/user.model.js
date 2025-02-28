@@ -21,7 +21,13 @@ const userSchema = new mongoose_1.default.Schema({
     profilePic: {
         type: String,
         default: ""
-    }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    verificationCode: String,
+    verificationCodeExpiry: Date,
 }, {
     timestamps: true
 });

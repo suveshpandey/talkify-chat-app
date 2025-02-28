@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const   BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://localhost:3000";
 
 interface AuthState {
     authUser: any | null,
@@ -14,13 +14,17 @@ interface AuthState {
     isCheckingAuth: boolean,
     onlineUsers: string[],
     socket: ReturnType<typeof io> | null,
+
+
     checkAuth: () => void,
     signup: (data: SignupData) => Promise<void>,
     logout: () => void,
     login: (data: LoginData) => Promise<void>,
     updateProfile: (data: UpdateProfileData) => Promise<void>,
     connectSocket: () => void,
-    disconnectSocket: () => void
+    disconnectSocket: () => void,
+    verifyEmail: (email: string, verificationCode: string) => Promise<void>
+    resendVerificationCode: (email: string) => Promise<void>
 }
 interface SignupData {
     email: string,
@@ -36,7 +40,7 @@ interface UpdateProfileData {
 }
 
 export const useAuthStore = create<AuthState> ((set, get) => ({
-    
+
     authUser: null,
     isSigninup: false,
     isLoggingIn: false,
@@ -64,9 +68,10 @@ export const useAuthStore = create<AuthState> ((set, get) => ({
         set({isSigninup: true});
         try{
             const res = await axiosInstance.post("/auth/signup", data);
-            set({ authUser: res.data });
-            toast.success("Account created successfully");
-            get().connectSocket();
+            
+            toast.success("Verification code sent to your email");
+            console.log(res)
+            window.location.href = `/verify-email?email=${encodeURIComponent(data.email)}`;
         }
         catch (error) {
             const err = error as AxiosError<{ message: string }>;
@@ -76,6 +81,36 @@ export const useAuthStore = create<AuthState> ((set, get) => ({
         finally{
             set({isSigninup: false});
         }      
+    },
+
+    verifyEmail: async (email: string, verificationCode: string) => {
+        try{
+            const res = await axiosInstance.put("./auth/verify-email", {
+                email,
+                verificationCode
+            });
+
+            // After successful verification, check auth status
+            get().checkAuth();
+            console.log(res);
+            toast.success("Email verified successfully!");
+        }
+        catch(error){
+            const err = error as AxiosError<{ message: string }>;
+            toast.error(err.response?.data?.message || "Verification failed");
+            throw error;
+        }
+    },
+
+    resendVerificationCode: async (email: string) => {
+        try{
+            await axiosInstance.post("/auth/resend-verification-code", { email });
+            toast.success("New verification code sent");
+        }
+        catch(error){
+            const err = error as AxiosError<{ message: string }>;
+            toast.error(err.response?.data?.message || "Failed to resend code");
+        }
     },
 
     logout: async () => {
@@ -96,10 +131,8 @@ export const useAuthStore = create<AuthState> ((set, get) => ({
         set({ isLoggingIn: true });
         try {
             const res = await axiosInstance.post("/auth/login", data);
-            set({ authUser: res.data });
-    
-            // Fetch the latest user data
-            // await useAuthStore.getState().checkAuth();
+            set({ authUser: res.data.loggedInUser });
+
             
             toast.success("Logged in successfully");
             get().connectSocket();
@@ -151,4 +184,5 @@ export const useAuthStore = create<AuthState> ((set, get) => ({
     disconnectSocket: () => {
         if(get().socket?.connected) get().socket?.disconnect();
     }
+
 }));

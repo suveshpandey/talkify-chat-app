@@ -1,16 +1,20 @@
 import {Routes, Route, Navigate } from 'react-router-dom';
 import { Commet } from 'react-loading-indicators';
+import { useEffect } from 'react';
+import {Toaster} from "react-hot-toast";
+
+
+import Navbar from './components/Navbar';
 
 import HomePage from './pages/HomePage'
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
-import SettingsPage from './pages/SettingsPage';
 import ProfilePage from './pages/ProfilePage';
+import VerifyEmailPage from './pages/VerificationPage';
+
 import { useAuthStore } from './store/useAuthStore';
-import { useEffect } from 'react';
-import {Toaster} from "react-hot-toast";
-import Navbar from './components/Navbar';
 import useThemeStore from './store/useThemeStore';
+
 
 
 function App() {
@@ -38,8 +42,8 @@ function App() {
           <Routes>
               <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
               <Route path="/signup" element={ !authUser ? <SignupPage /> : <Navigate to="/" /> } />
+              <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/login" element={ !authUser ? <LoginPage /> : <Navigate to="/" /> } />
-              <Route path="/settings-page" element={ <SettingsPage />} />
               <Route path="/profile-page" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
           </Routes>
 

@@ -111,4 +111,4 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             res.status(500).json({message: "Internal server error."});
         }
     }
-}
+};
