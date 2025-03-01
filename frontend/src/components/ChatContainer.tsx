@@ -6,6 +6,9 @@ import ChatInput from "./ChatInput";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/utils";
 
+import { RxCross2 } from "react-icons/rx";
+
+
 const ChatContainer = () => {
     const {messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unSubscribeFromMessages} = useChatStore();
     const {authUser} = useAuthStore();
@@ -54,7 +57,7 @@ const ChatContainer = () => {
                             onClick={handleCloseZoom}
                             className="absolute -top-3 -right-3 bg-red-400 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors"
                         >
-                            X
+                            <RxCross2 />
                         </button>
                     </div>
                 </div>

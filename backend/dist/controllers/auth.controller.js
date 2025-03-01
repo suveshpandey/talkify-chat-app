@@ -18,51 +18,6 @@ const user_model_1 = __importDefault(require("../models/user.model"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const utils_1 = require("../lib/utils");
 const email_1 = require("../lib/email");
-//* old signup route
-// export const signup = async (req: Request, res: Response): Promise<void> => {
-//     const {email, password, username} = req.body;
-//     try{
-//         if(password.length < 6){
-//             res.status(400).json({message: "Password must be of atleast 6 characters."});
-//             return;
-//         }
-//         //check if this user exists
-//         const user = await userModel.findOne({email});
-//         if(user){
-//             res.status(400).json({message: "Email already exists."});
-//             return;
-//         }
-//         //create a salt and hash the input password
-//         const salt = await bcrypt.genSalt(10);
-//         const hashedPassword = await bcrypt.hash(password, salt);
-//         //create a new user in db
-//         const newUser = new userModel({
-//             email: email,
-//             password: hashedPassword,
-//             username: username,
-//         })
-//         //response
-//         if(newUser){
-//             generateToken(newUser._id, res);
-//             await newUser.save();
-//             res.status(201).json({message: "Signed-up successfully", newUser: newUser});
-//         }
-//         else{
-//             res.status(400).json({message: "Invalid user data."});
-//         }
-//     }
-//     catch(error: unknown){
-//         if(error instanceof Error){
-//             console.log("Error in signup contoller.", error.message);
-//             res.status(500).json({message: error.message});
-//         }
-//         else{
-//             console.log("Unknown error in signup controller: ", error);
-//             res.status(500).json({message: "Internal server error."});
-//         }
-//     }
-// };
-//* new signup route
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, username } = req.body;
     try {
