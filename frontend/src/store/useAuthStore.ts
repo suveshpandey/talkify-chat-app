@@ -4,7 +4,8 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://talkify-chat-app-backend.onrender.com";
 interface AuthState {
     authUser: any | null,
     isSigninup: boolean,
