@@ -12,13 +12,15 @@ const message_route_1 = __importDefault(require("./routes/message.route"));
 const db_1 = require("./lib/db");
 const socket_1 = require("./lib/socket");
 dotenv_1.default.config();
-const PORT = process.env.PORT;
-// app.use(express.json());
+const PORT = process.env.PORT || 3000;
+socket_1.app.set("trust proxy", 1);
 socket_1.app.use(express_1.default.json({ limit: "10mb" })); // Increase JSON payload size limit
 socket_1.app.use(express_1.default.urlencoded({ limit: "10mb", extended: true }));
 socket_1.app.use((0, cookie_parser_1.default)());
 socket_1.app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL
+        ? process.env.FRONTEND_URL.split(',')
+        : ["http://localhost:5173"],
     credentials: true
 }));
 socket_1.app.use('/api/auth', auth_route_1.default);

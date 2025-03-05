@@ -13,7 +13,9 @@ const server = http_1.default.createServer(app);
 exports.server = server;
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: ["http://localhost:5173"],
+        origin: process.env.FRONTEND_URL
+            ? process.env.FRONTEND_URL.split(',')
+            : ["http://localhost:5173"],
         credentials: true
     },
 });
