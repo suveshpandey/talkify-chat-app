@@ -9,17 +9,23 @@ interface UserInterface {
     user: User,
     selectedUser: User | null,
     setSelectedUser: (user: User) => void,
-    onlineUsers: string[]
+    onlineUsers: string[],
+    toggleSidebar: () => void
 }
 
-const ContactCard = ({ user, setSelectedUser, selectedUser, onlineUsers }: UserInterface) => {
+const ContactCard = ({ user, setSelectedUser, selectedUser, onlineUsers, toggleSidebar }: UserInterface) => {
     return (
         <div 
             className={`flex items-center mt-2 p-3 pl-6 cursor-pointer transition-all duration-300 rounded-lg
                 ${selectedUser?._id === user._id 
                     ? "bg-slate-300 dark:bg-slate-700" 
                     : "hover:bg-slate-300 dark:hover:bg-slate-700"}`} 
-            onClick={() => setSelectedUser(user)}
+            onClick={() => {
+                setSelectedUser(user);
+                if (window.innerWidth < 640) { // Tailwind's 'sm' breakpoint (640px)
+                    toggleSidebar();
+                }
+            }}
         >
             <div className="relative">
                 <img
@@ -56,7 +62,7 @@ const SkeletonContactCard = () => {
 };
 
 const Sidebar = () => {
-    const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
+    const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading, toggleSidebar } = useChatStore();
     const { onlineUsers } = useAuthStore();
     const [showOnlineUsersOnly, setShowOnlineUsersOnly] = useState(false);
     const onlineFilteredUsers = showOnlineUsersOnly ? 
@@ -113,6 +119,7 @@ const Sidebar = () => {
                         selectedUser={selectedUser}
                         setSelectedUser={() => setSelectedUser(user)}
                         onlineUsers={onlineUsers}
+                        toggleSidebar={toggleSidebar}
                     />
                 ))}
             </div>
