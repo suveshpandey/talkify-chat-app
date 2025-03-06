@@ -20,7 +20,7 @@ const Navbar = () => {
 
     return (
         <nav className="h-[4rem] w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 transition-colors duration-300">
-            <div className="w-[100%] h-full flex flex-wrap items-center justify-between mx-auto p-4">
+            <div className="md:w-[95%] lg:w-[75%] w-[100%] h-full flex flex-wrap items-center justify-between mx-auto sm:p-0 p-4">
                 <div className="flex sm:gap-x-3 gap-x-1 items-center">
                     <BiMenuAltLeft 
                         onClick={toggleSidebar} 
