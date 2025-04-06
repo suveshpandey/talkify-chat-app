@@ -1,8 +1,7 @@
 import {Routes, Route, Navigate } from 'react-router-dom';
-import { Commet } from 'react-loading-indicators';
 import { useEffect } from 'react';
 import {Toaster} from "react-hot-toast";
-
+import {ThreeDot} from "react-loading-indicators"
 
 import Navbar from './components/Navbar';
 
@@ -29,8 +28,9 @@ function App() {
 
   if(isCheckingAuth && !authUser){
     return(
-      <div className='h-screen w-full flex items-center justify-center'>
-        <Commet color="#3137cc" size="medium" text="" textColor="" />
+      <div className='h-screen w-full flex flex-col gap-y-4 items-center justify-center'>
+        <ThreeDot color="#94aeba" size="medium" text="" textColor="" />
+        <p className=''>Getting things ready for you... Please hold on for a moment.</p>
       </div>
     )
   }
